@@ -1,0 +1,188 @@
+/* --- Tailwind base --- */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------------------------------------
+   Zostel Thailand — Global Design Tokens
+---------------------------------------- */
+:root{
+  /* Brand (primary accent) */
+  --brand: #FF5A1F;           /* Zostel Orange */
+  --brand-600: #ef4f14;
+  --brand-700: #d9420c;
+  --brand-800: #b93806;
+
+  /* Accents used in gradients/overlays */
+  --brand-light: #ffd7c8;
+  --ink: #0f172a;             /* Slate-900 ish for headings */
+  --ink-2: #334155;           /* Slate-600 ish for body */
+}
+
+/* Base type scale & smoothing */
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+@media (min-width: 640px){
+  html { font-size: 17px; }  /* Slightly larger on small+ */
+}
+@media (min-width: 1024px){
+  html { font-size: 18px; }  /* Comfortable desktop reading */
+}
+
+/* ---------------------------------------
+   Utilities & Helpers
+---------------------------------------- */
+
+/* Hide native scrollbars for horizontal nav rows etc. */
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Frosted glass card (used on hero & carousel overlays) */
+.card-glass{
+  background: rgba(255,255,255,0.14);
+  border: 1px solid rgba(255,255,255,0.25);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  backdrop-filter: saturate(140%) blur(10px);
+  -webkit-backdrop-filter: saturate(140%) blur(10px);
+}
+
+/* Soft elevated card shadow (for grids, careers cards) */
+.shadow-soft{
+  box-shadow: 0 6px 24px -12px rgba(0,0,0,0.15);
+}
+
+/* Ken Burns slow zoom for slide backdrops */
+.kenburns{
+  transform-origin: center center;
+  animation: kenburns-zoom 20s ease-out infinite alternate;
+}
+@keyframes kenburns-zoom{
+  0%   { transform: scale(1) translate3d(0,0,0); }
+  100% { transform: scale(1.12) translate3d(0,0,0); }
+}
+
+/* Reveal on scroll (used by SplitBand panels) */
+.reveal-enter{
+  opacity: 0;
+  transform: translateY(8px);
+}
+.reveal-in{
+  animation: reveal-in 420ms ease-out forwards;
+}
+@keyframes reveal-in{
+  to{
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Progress dot animation for carousel */
+.dot-anim{
+  width: 0%;
+  animation: dot-progress var(--dotDur, 4500ms) linear forwards;
+}
+@keyframes dot-progress{
+  to { width: 100%; }
+}
+
+/* Badge helpers */
+.badge-brand{
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  background: color-mix(in srgb, var(--brand) 12%, white);
+  color: var(--ink);
+  border: 1px solid color-mix(in srgb, var(--brand) 22%, white);
+  padding: 0.15rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* Comfortable underline look for footer/legal links */
+.link-soft{
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(15,23,42,0.2);
+}
+.link-soft:hover{
+  text-decoration-color: var(--brand);
+}
+
+/* ---------------------------------------
+   Leaflet map tweaks (map + card hybrid)
+---------------------------------------- */
+
+.leaflet-container{
+  font: inherit;              /* Keep site typography */
+}
+.leaflet-popup-content{
+  margin: 8px 12px;
+  line-height: 1.25;
+  font-size: 0.875rem;
+}
+.leaflet-popup-content-wrapper{
+  border-radius: 12px;
+  padding: 6px 6px;
+}
+.leaflet-popup-tip{
+  display: none;              /* cleaner bubble */
+}
+
+/* Custom SVG pin wrapper if we render via DivIcon with class */
+.z-pin{
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.25));
+}
+
+/* Optional hover “pulse” for active pin highlight */
+@keyframes pin-pulse {
+  0%   { transform: translateY(0) scale(1);   filter: drop-shadow(0 2px 8px rgba(0,0,0,0.25)); }
+  50%  { transform: translateY(-1px) scale(1.03); filter: drop-shadow(0 4px 12px rgba(0,0,0,0.28)); }
+  100% { transform: translateY(0) scale(1);   filter: drop-shadow(0 2px 8px rgba(0,0,0,0.25)); }
+}
+.pin-active{
+  animation: pin-pulse 900ms ease-in-out infinite;
+}
+
+/* --- Premium carousel helpers --- */
+.kenburns-slow {
+  animation: kenburns 18s ease-out both;
+}
+@keyframes kenburns {
+  0%   { transform: scale(1.05); }
+  100% { transform: scale(1.10); }
+}
+
+.glass-card {
+  background: linear-gradient(to bottom right, rgba(255,255,255,0.18), rgba(255,255,255,0.08));
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.25);
+  box-shadow: 0 18px 50px -12px rgba(0,0,0,.35);
+}
+
+.dot-progress {
+  width: 100%;
+  background: linear-gradient(to right, var(--brand), var(--brand));
+  animation: dotvar var(--dotMs, 4500ms) linear forwards;
+}
+@keyframes dotvar {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(0%); }
+}
+
+
+/* ---------------------------------------
+   Brand color shortcuts for Tailwind + inline styles
+---------------------------------------- */
+.text-brand{ color: var(--brand); }
+.bg-brand{ background-color: var(--brand); }
+.border-brand{ border-color: var(--brand); }
+.bg-brand/10{ background-color: color-mix(in srgb, var(--brand) 10%, transparent); }
+
+/* Prevent images from collapsing in flex items on Safari */
+img { min-height: 0; }
+
+/* Improve button click feel on mobile */
+button, a, [role="button"] { -webkit-tap-highlight-color: transparent; }
